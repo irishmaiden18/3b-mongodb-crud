@@ -12,7 +12,7 @@ const logger = require("morgan");
 /*
     0. Starter code - Middleware
 */
-app.use(express.urlencoded({ extended: false }));
+
 app.use(express.json());
 app.use(logger("dev"));
 
