@@ -36,5 +36,3 @@ Stretch goals:
 - `R`ead the plan for a specific date.
 - `U`pdate but select the documents by Date instead
 - `R`ead all meals of a certain type. For example, only reading `Breakfast` meals. (Hint: https://mongoosejs.com/docs/api/query.html#Query.prototype.select() )
-- `R`ead all plans for a specific day of the week.
-- Make each meal within your meal plans an object, with properties for the food eaten and the calories of that food.
