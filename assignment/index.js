@@ -31,7 +31,7 @@ const PORT = 3000
 // begin listening
 app.listen(PORT, () => {
 
-    consoloe.log(`Server is now listening on Port: ${PORT}`)
+    console.log(`Server is now listening on Port: ${PORT}`)
 
     // establish the database connection when the server runs using the database connection function we imported
     connectToMongoDB()
@@ -42,4 +42,4 @@ app.listen(PORT, () => {
 
 
 
-// 345
+// 410 check in

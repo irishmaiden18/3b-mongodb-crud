@@ -35,14 +35,14 @@ router.get("/", async (req, res) => {
 
 })
 /*
-    8. Write a request handler function for POST reqeuests to localhost:3000/api/snacks
+    8. Write a request handler function for POST requests to localhost:3000/api/snacks
 */
 // remember, everything with our model is asynchronous
 router.post("/", async (req, res) => {
     try {
         // create a new snack in our database
         // model.create(object) -- creates a database entry based on the object data we pass in
-        // for dynamic data from a POST request, that objec will be the request.body
+        // for dynamic data from a POST request, that object will be the request.body
         // working with the database takes time, so we await the create function
         const newSnack = await Snack.create(req.body)
 

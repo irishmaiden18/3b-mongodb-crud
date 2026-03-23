@@ -2,10 +2,10 @@
 const mongoose = require("mongoose")
 
 // import .env
-const dotevnv = require("dotenv")
+const dotenv = require("dotenv")
 
 // load your .env file
-dotevnv.config()
+dotenv.config()
 
 // create a connection function that connects to our database
 // everything that has to do with out database must be async/await
