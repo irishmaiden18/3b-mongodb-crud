@@ -27,7 +27,7 @@ Your API should be able to perform the following actions:
 - `C`reate a plan for a new date
 - `R`ead the meal plans for every date
 - `U`pdate meals after eating them (select the documents by ID)
-- `D`elete a plan, if the user decided not to follow it that day, or if editing a plan would take longer than deleting and creating a new one
+- `D`elete a plan
 
 Stretch goals:
 
