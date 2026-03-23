@@ -4,8 +4,8 @@
 
 ## Goals
 
-- Create an API that is connected to a database on Mongo DB
-- Allow users to `C`reate, `R`ead, `U`pdate, and `D`elete data that exists on the server
+-DONE-- Create an API that is connected to a database on Mongo DB
+-DONE-- Allow users to `C`reate, `R`ead, `U`pdate, and `D`elete data that exists on the server
 
 ---
 
@@ -24,15 +24,15 @@ Things such as Snacks or Dessert are optional.
 
 Your API should be able to perform the following actions:
 
-- `C`reate a plan for a new date
-- `R`ead the meal plans for every date
-- `U`pdate meals after eating them (select the documents by ID)
-- `D`elete a plan
+-DONE-- `C`reate a plan for a new date
+-DONE-- `R`ead the meal plans for every date
+-DONE-- `U`pdate meals after eating them (select the documents by ID)
+-DONE-- `D`elete a plan
 
 Stretch goals:
 
 **You will have to do some research for some of the below.**
 
-- `R`ead the plan for a specific date.
+-DONE-- `R`ead the plan for a specific date.
 - `U`pdate but select the documents by Date instead
 - `R`ead all meals of a certain type. For example, only reading `Breakfast` meals. (Hint: https://mongoosejs.com/docs/api/query.html#Query.prototype.select() )

@@ -33,6 +33,37 @@ router.get("/", async (req, res) => {
 
 })
 
+// handle GET requests for a particular date
+// anything to do with our database must be async/await
+router.get("/:date", async (req, res) => {
+
+    try {
+
+        // return the meal plan that has the date from the URL, the dynamic parameter
+        const mealPlan = await MealPlanner.findOne({ date: req.params.date})
+
+        // prevent a false positive if we don't find a meal plan
+        if (!mealPlan) {
+            throw new Error("Meal plan NOT found!")
+        }
+
+        // send a response with the meal plan from the querried date
+        res.json ({
+            message: "success",
+            payload: mealPlan
+        })
+        
+    } catch (error) {
+
+        // send a failure message with the error message
+        res.status(500).json ({
+            message: "failure",
+            payload: error.message
+        })
+        
+    }
+})
+
 // handle POST requests
 // everything that has to do with our database must be async/await
 router.post("/", async (req, res) => {
@@ -77,7 +108,7 @@ router.put("/:id", async (req, res) => {
         // without this, code will only fail if we pass in an invalid object id.
         // including this makes it so if we pass in a valid objectId and don't find the ID, we'll still return a failure message
         if (!updatedMealPlan) {
-            throw new Error("Meal Plan NOT found!")
+            throw new Error("Meal plan NOT found!")
         }
 
         // send a positive response to the user with the updated data if we dont hit the error above
