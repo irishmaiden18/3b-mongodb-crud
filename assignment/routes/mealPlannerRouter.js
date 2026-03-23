@@ -92,7 +92,7 @@ router.post("/", async (req, res) => {
     }
 })
 
-// handle the PUT requests
+// handle the PUT requests searching by ID
 // everything that has to do with our database must be async/await
 router.put("/:id", async (req, res) => {
 
@@ -126,6 +126,56 @@ router.put("/:id", async (req, res) => {
         })
         
     }
+})
+
+// handle PUT requests searching by date
+// everything that has to do with our database must be async/await
+router.put("/date/:date", async (req, res) => {
+
+    try {
+
+        // return the meal plan that has the date from the URL, the dynamic parameter
+        const foundMealPlan = await MealPlanner.findOne({date: req.params.date})
+
+        // prevent a false positive if we don't find a meal plan
+        if (!foundMealPlan) {
+
+            throw new Error("Meal plan to update NOT found!")
+
+        } else {
+
+            // create a new object to update the meal plan with that features the properties the user is giving, defaulting to the existing values for the properties when the user gives nothing
+            const mealPlanToUpdate = {
+                date: req.body.date || foundMealPlan.date,
+                breakfast: req.body.breakfast || foundMealPlan.breakfast,
+                snacks: req.body.snacks || foundMealPlan.snacks,
+                lunch: req.body.lunch || foundMealPlan.lunch,
+                dinner: req.body.dinner || foundMealPlan.dinner,
+                dessert: req.body.dessert || foundMealPlan.dessert
+            }
+
+            // update the meal plan object with the new object we created
+            Object.assign(foundMealPlan, mealPlanToUpdate)
+
+            // send a response to the user with the updated meal plan
+            res.json ({
+                message: "success",
+                messageDetail: "Meal plan successfully updated!",
+                payload: foundMealPlan
+            })
+
+        }
+        
+    } catch (error) {
+
+        // send a failure response to the user with the error message
+        res.status(500).json ({
+            message: "failure",
+            payload: error.message
+        })
+        
+    }
+
 })
 
 // handle DELETE requests
