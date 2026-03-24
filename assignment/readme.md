@@ -35,4 +35,4 @@ Stretch goals:
 
 -DONE-- `R`ead the plan for a specific date.
 -DONE-- `U`pdate but select the documents by Date instead
-- `R`ead all meals of a certain type. For example, only reading `Breakfast` meals. (Hint: https://mongoosejs.com/docs/api/query.html#Query.prototype.select() )
+-DONE-- `R`ead all meals of a certain type. For example, only reading `Breakfast` meals. (Hint: https://mongoosejs.com/docs/api/query.html#Query.prototype.select() )

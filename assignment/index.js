@@ -37,9 +37,3 @@ app.listen(PORT, () => {
     connectToMongoDB()
 
 })
-
-
-
-
-
-// 410 check in

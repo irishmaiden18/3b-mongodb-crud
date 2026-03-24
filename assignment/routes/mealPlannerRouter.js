@@ -14,9 +14,50 @@ router.get("/", async (req, res) => {
     try {
 
         // return all meal plans back from the database with .find()
-        const mealPlans = await MealPlanner.find()
+        let mealPlans = await MealPlanner.find()
 
-        // send a response to the user with meal plans from the database
+        if (req.query.meal) {
+            
+            // if the query parameter is "breakfast"
+            if (req.query.meal.toLowerCase() === "breakfast") {
+
+                // mealPlans is an array of all the breakfasts in the database, without the id
+                mealPlans = await MealPlanner.find().select("breakfast -_id")
+
+            // else if the query parameter is "snacks"
+            } else if (req.query.meal.toLowerCase() === "snacks") {
+
+                // mealPlans is an array of all the snacks in the database, without the id
+                mealPlans = await MealPlanner.find().select("snacks -_id")
+                
+            // else if the query parameter is "lunch"
+            } else if (req.query.meal.toLowerCase() === "lunch") {
+
+                // mealPlans is an array of all the lunches in the database, without the id
+                mealPlans = await MealPlanner.find().select("lunch -_id")
+
+            // else if the query parameter is "dinner"
+            } else if (req.query.meal.toLowerCase() === "dinner") {
+
+                // mealPlans is an array of all the dinners in the database, without the id
+                mealPlans = await MealPlanner.find().select("dinner -_id")
+
+            // else if the query parameter is "dessert"
+            } else if (req.query.meal.toLowerCase() === "dessert") {
+
+                // mealPlans is an array of all the desserts in the database, without the id
+                mealPlans = await MealPlanner.find().select("dessert -_id")
+            
+            } else {
+
+                res.status(404).json ({
+                    message: "failure",
+                    payload: "Invalid query! No results to show"
+                })
+            }
+        }
+
+        // send a response to the user with the appropriate mealPlans from the database
         res.json ({
             message: "success",
             payload: mealPlans
