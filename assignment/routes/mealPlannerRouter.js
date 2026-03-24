@@ -16,46 +16,61 @@ router.get("/", async (req, res) => {
         // return all meal plans back from the database with .find()
         let mealPlans = await MealPlanner.find()
 
+        // account for queries inconsistent with available queries
+        // create an array of valid options
+        const validOptions =["breakfast", "snacks", "lunch", "dinner", "dessert"]
+
+        // if there is a meal query
         if (req.query.meal) {
-            
-            // if the query parameter is "breakfast"
-            if (req.query.meal.toLowerCase() === "breakfast") {
 
-                // mealPlans is an array of all the breakfasts in the database, without the id
-                mealPlans = await MealPlanner.find().select("breakfast -_id")
+            // if our validOptions array doesn't include the query.toLowerCase()
+            if (!validOptions.includes(req.query.meal.toLowerCase())) {
 
-            // else if the query parameter is "snacks"
-            } else if (req.query.meal.toLowerCase() === "snacks") {
+                // throw an error
+                throw new Error("Meal type not found!")
 
-                // mealPlans is an array of all the snacks in the database, without the id
-                mealPlans = await MealPlanner.find().select("snacks -_id")
-                
-            // else if the query parameter is "lunch"
-            } else if (req.query.meal.toLowerCase() === "lunch") {
-
-                // mealPlans is an array of all the lunches in the database, without the id
-                mealPlans = await MealPlanner.find().select("lunch -_id")
-
-            // else if the query parameter is "dinner"
-            } else if (req.query.meal.toLowerCase() === "dinner") {
-
-                // mealPlans is an array of all the dinners in the database, without the id
-                mealPlans = await MealPlanner.find().select("dinner -_id")
-
-            // else if the query parameter is "dessert"
-            } else if (req.query.meal.toLowerCase() === "dessert") {
-
-                // mealPlans is an array of all the desserts in the database, without the id
-                mealPlans = await MealPlanner.find().select("dessert -_id")
-            
-            } else {
-
-                res.status(404).json ({
-                    message: "failure",
-                    payload: "Invalid query! No results to show"
-                })
             }
+
+            // mealPlans is an array of all the query parameter meals in the database without the id
+            mealPlans = await MealPlanner.find().select(`${req.query.meal} -_id`)
+
         }
+
+        //alternative method: 
+
+        // if (req.query.meal) {
+            
+        //     // if the query parameter is "breakfast"
+        //     if (req.query.meal.toLowerCase() === "breakfast") {
+
+        //         // mealPlans is an array of all the breakfasts in the database, without the id
+        //         mealPlans = await MealPlanner.find().select("breakfast -_id")
+
+        //     // else if the query parameter is "snacks"
+        //     } else if (req.query.meal.toLowerCase() === "snacks") {
+
+        //         // mealPlans is an array of all the snacks in the database, without the id
+        //         mealPlans = await MealPlanner.find().select("snacks -_id")
+                
+        //     // else if the query parameter is "lunch"
+        //     } else if (req.query.meal.toLowerCase() === "lunch") {
+
+        //         // mealPlans is an array of all the lunches in the database, without the id
+        //         mealPlans = await MealPlanner.find().select("lunch -_id")
+
+        //     // else if the query parameter is "dinner"
+        //     } else if (req.query.meal.toLowerCase() === "dinner") {
+
+        //         // mealPlans is an array of all the dinners in the database, without the id
+        //         mealPlans = await MealPlanner.find().select("dinner -_id")
+
+        //     // else if the query parameter is "dessert"
+        //     } else if (req.query.meal.toLowerCase() === "dessert") {
+
+        //         // mealPlans is an array of all the desserts in the database, without the id
+        //         mealPlans = await MealPlanner.find().select("dessert -_id")
+            
+        //     } 
 
         // send a response to the user with the appropriate mealPlans from the database
         res.json ({
@@ -68,7 +83,7 @@ router.get("/", async (req, res) => {
         // send an error response to the user with an error message
         res.status(500).json ({
             message: "failure",
-            payload: "Error fetching Meal Plans from the database"
+            payload: error.message
         })
     }
 
@@ -175,8 +190,11 @@ router.put("/date/:date", async (req, res) => {
 
     try {
 
-        // return the meal plan that has the date from the URL, the dynamic parameter
-        const foundMealPlan = await MealPlanner.findOne({date: req.params.date})
+        // model.findOneAndUpdate({property to search by}, newData, {new: true}) -- 
+        // property to search by -- date of the item we are trying to update
+        // newData -- incoming data we want to overwrite the old object with (ALWAYS req.body)
+        // new: true -- a flag telling the computer to return the updated version of the data data rather than the old data. without this, the data will still update BUT the computer will return the original unupdated data
+        const foundMealPlan = await MealPlanner.findOneAndUpdate({date: req.params.date}, req.body, {new: true})
 
         // prevent a false positive if we don't find a meal plan
         if (!foundMealPlan) {
@@ -184,19 +202,6 @@ router.put("/date/:date", async (req, res) => {
             throw new Error("Meal plan to update NOT found!")
 
         } else {
-
-            // create a new object to update the meal plan with that features the properties the user is giving, defaulting to the existing values for the properties when the user gives nothing
-            const mealPlanToUpdate = {
-                date: req.body.date || foundMealPlan.date,
-                breakfast: req.body.breakfast || foundMealPlan.breakfast,
-                snacks: req.body.snacks || foundMealPlan.snacks,
-                lunch: req.body.lunch || foundMealPlan.lunch,
-                dinner: req.body.dinner || foundMealPlan.dinner,
-                dessert: req.body.dessert || foundMealPlan.dessert
-            }
-
-            // update the meal plan object with the new object we created
-            Object.assign(foundMealPlan, mealPlanToUpdate)
 
             // send a response to the user with the updated meal plan
             res.json ({
